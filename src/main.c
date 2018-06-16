@@ -19,15 +19,18 @@ int main()
 
     l_uint_add32(&num1, 23454);
     l_uint_add32(&num2, 6432123);
+    l_uint_add32(&num2, 6432123);
+    l_uint_add32(&num2, 6432123);
 
-    l_uint_add(&num3, &num1, &num2);
+    l_uint_add(&num3, &num1);
 
-    l_uint_mult(&num4, &num1, &num2);
-
-    l_uint_print(&num1);
-    l_uint_print(&num2);
     l_uint_print(&num3);
+
+    l_uint_mult(&num4, &num1);
+
     l_uint_print(&num4);
+
+    l_uint_sub(&num3, &num2);
 
     return 0;
 }
