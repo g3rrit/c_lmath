@@ -143,8 +143,19 @@ int l_uint_sub(struct l_uint *res, struct l_uint *sub)
     int overflow = 0;
     for(int i = 0; i < sub->size && i < res->size; i++)
     {
-        if(i < sub->size)
-            overflow += l_uint_sub8_at(res, i, sub->data[i]);
+        overflow += l_uint_sub8_at(res, i, sub->data[i]);
+    }
+
+    return overflow;
+}
+
+
+int l_uint_sub_at(struct l_uint *res, struct l_uint *sub, int at)
+{
+    int overflow = 0;
+    for(int i = 0; i < sub->size && i + at < res->size; i++)
+    {
+        overflow += l_uint_sub8_at(res, i + at, sub->data[i]);
     }
 
     return overflow;
@@ -176,6 +187,113 @@ int l_uint_mult(struct l_uint *res, struct l_uint *mult)
     return overflow;
 }
 
+//-----DIVISION-----
+
+int l_uint_div(struct l_uint *res, struct l_uint *div)
+{
+    struct l_uint div1;
+    l_uint_init(&div1, res->size);
+    l_uint_add(&div1, res);
+
+    //TODO: implement
+    return 0;
+}
+
+
+//-----MODULAR-DIVISION-----
+
+int l_uint_mdiv(struct l_uint *res, struct l_uint *mod)
+{
+    int overflow = 0;
+    int count = 0;
+    for(int i = 0; i < res->size && i < mod->size && (res->data[i] != 0 || mod->data[i] != 0); i++)
+        if(res->data[i] > 0 && mod->data[i] == 0)
+            count++;
+
+    for(int i = count; i >= 0; i--)
+    {
+        if(!l_uint_grt_at(mod, res, i))
+        {
+            overflow += l_uint_sub_at(res, mod, i);
+        }
+    }
+
+    return overflow;
+}
+
+//-----COMPARISION-----
+
+int l_uint_grt(struct l_uint *num1, struct l_uint *num2)
+{
+    int size = num1->size > num1->size ? num1->size : num2->size;
+
+    for(int i = size; i >= 0; i--)
+    {
+        uint8_t n1 = num1->size <= i ? num1->data[i] : 0;
+        uint8_t n2 = num2->size <= i ? num2->data[i] : 0;
+
+        if(n1 > n2)
+            return 1;
+        else if(n1 < n2)
+            return 0;
+    }
+    return 0;
+}
+
+int l_uint_grt_at(struct l_uint *num1, struct l_uint *num2, int at)
+{
+    int size = num1->size + at > num1->size ? num1->size + at : num2->size;
+
+    for(int i = size; i >= at; i--)
+    {
+        uint8_t n1 = num1->size + at <= i ? num1->data[i - at] : 0;
+        uint8_t n2 = num2->size <= i ? num2->data[i] : 0;
+
+        if(n1 > n2)
+            return 1;
+        else if(n1 < n2)
+            return 0;
+    }
+    return 0;
+}
+
+int l_uint_grt_eq(struct l_uint *num1, struct l_uint *num2)
+{
+    int size = num1->size > num1->size ? num1->size : num2->size;
+
+    for(int i = size; i >= 0; i--)
+    {
+        uint8_t n1 = num1->size <= i ? num1->data[i] : 0;
+        uint8_t n2 = num2->size <= i ? num2->data[i] : 0;
+
+        if(n1 >= n2 && n1 != 0)
+            return 1;
+        else if(n1 < n2)
+            return 0;
+    }
+    return 1;
+}
+
+int l_uint_grt_eq_at(struct l_uint *num1, struct l_uint *num2, int at)
+{
+    int size = num1->size + at > num1->size ? num1->size + at : num2->size;
+
+    for(int i = size; i >= at; i--)
+    {
+        uint8_t n1 = num1->size + at <= i ? num1->data[i - at] : 0;
+        uint8_t n2 = num2->size <= i ? num2->data[i] : 0;
+
+        if(n1 >= n2 && n1 != 0)
+            return 1;
+        else if(n1 < n2)
+            return 0;
+    }
+    return 1;
+}
+
+
+
+//etc
 
 int l_uint_toa(char *res, struct l_uint *num)
 {

@@ -38,13 +38,36 @@ int l_uint_sub32(struct l_uint *res, uint32_t sub);
 
 int l_uint_sub(struct l_uint *res, struct l_uint *sub);
 
+int l_uint_sub_at(struct l_uint *res, struct l_uint *sub, int at);
+
 //------MULTIPLICATION------
 
 int l_uint_mult(struct l_uint *res, struct l_uint *mult);
 
+//-----DIVISION-----
+
+int l_uint_div(struct l_uint *res, struct l_uint *div);
+
+//-----MODULAR-DIVISION-----
+
+int l_uint_mdiv(struct l_uint *res, struct l_uint *mod);
+
+//-----COMPARISION-----
+
+int l_uint_grt(struct l_uint *num1, struct l_uint *num2);
+
+int l_uint_grt_at(struct l_uint *num1, struct l_uint *num2, int at);
+
+int l_uint_grt_eq(struct l_uint *num1, struct l_uint *num2);
+
+int l_uint_grt_eq_at(struct l_uint *num1, struct l_uint *num2, int at);
+
+//etc
+
 int l_uint_toa(char *res, struct l_uint *num);
 
 int l_uint_print(struct l_uint *num);
+
 
 #endif
 
